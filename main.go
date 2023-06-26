@@ -5,41 +5,29 @@ import (
 	"net/http"
 )
 
+const portNumber = ":8080"
+
+// Home is the handler for the home page
 func Home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "This is the Home Page")
+	fmt.Fprintf(w, "This is the home page")
 }
 
+// About is the handler for the about page
 func About(w http.ResponseWriter, r *http.Request) {
-	sum := AddValues(2, 2)
-	fmt.Fprint(w, "This is the About Page")
-	_, _ = fmt.Fprintf(w, fmt.Sprintf("2 + +2 is %d", sum))
-
+	sum := addValues(2, 2)
+	_, _ = fmt.Fprintf(w, fmt.Sprintf("This is the about page and 2 + 2 is %d"), sum)
 }
 
-// best practice
-//
-//	func AddValues(x, y int) (int error) {
-//		var sum int
-//		sum = x + y
-//		return sum nil
-//	}
-func AddValues(x, y int) int {
+// addValues adds two ints x and y, and returns the sum
+func addValues(x, y int) int {
 	return x + y
 }
 
+// main is the main function
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// n, err := fmt.Fprintf(w, "Hello, world!")
-		// if err != nil {
-		// 	fmt.Println(err)
-
-		// }
-
-		fmt.Sprintf(fmt.Sprintf("Number of bytes written: %d", n))
-
-	})
-
+	http.HandleFunc("/", Home)
 	http.HandleFunc("/about", About)
 
-	_ = http.ListenAndServe(":8080", nil)
+	_, _ = fmt.Printf(fmt.Sprintf("Staring application on port %s", portNumber))
+	_ = http.ListenAndServe(portNumber, nil)
 }
